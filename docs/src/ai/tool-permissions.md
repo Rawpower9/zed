@@ -43,18 +43,19 @@ The `tool_permissions` setting lets you customize tool permissions by specifying
 
 ## Supported Tools
 
-| Tool               | Input Matched Against                            |
-| ------------------ | ------------------------------------------------ |
-| `terminal`         | The shell command string                         |
-| `edit_file`        | The file path                                    |
-| `write_file`       | The file path                                    |
-| `delete_path`      | The path being deleted                           |
-| `move_path`        | Source and destination paths                     |
-| `copy_path`        | Source and destination paths                     |
-| `create_directory` | The directory path                               |
-| `fetch`            | The URL                                          |
-| `search_web`       | The search query                                 |
-| `skill`            | The absolute path to the skill's `SKILL.md` file |
+| Tool                     | Input Matched Against                            |
+| ------------------------ | ------------------------------------------------ |
+| `terminal`               | The shell command string                         |
+| `edit_file`              | The file path                                    |
+| `write_file`             | The file path                                    |
+| `delete_path`            | The path being deleted                           |
+| `move_path`              | Source and destination paths                     |
+| `copy_path`              | Source and destination paths                     |
+| `create_directory`       | The directory path                               |
+| `fetch`                  | The URL                                          |
+| `search_web`             | The search query                                 |
+| `skill`                  | The absolute path to the skill's `SKILL.md` file |
+| `update_knowledge_graph` | The path of each node file written or deleted    |
 
 For [MCP tools](./mcp.md), use the format `mcp:<server>:<tool_name>`.
 For example, a tool called `create_issue` on a server called `github` would be `mcp:github:create_issue`.

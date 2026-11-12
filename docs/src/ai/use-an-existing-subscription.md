@@ -28,6 +28,8 @@ OpenAI API access is separate. If you have OpenAI API credits or API billing, us
 
 Claude Pro and Max subscriptions are separate from Anthropic API credits. Use Claude Agent or Claude Code where supported if you want subscription-backed Claude behavior.
 
+To add the project [knowledge graph](./knowledge-graph.md) and verification commands to Claude Agent while still signing in with your subscription, wrap it with the [Agent Harness](./agent-harness.md).
+
 For Anthropic API access, use [Use API Access](./use-api-access.md#anthropic).
 
 See [What Anthropic's New Claude Billing Means for Zed Users](https://zed.dev/blog/anthropic-subscription-changes) for more context.

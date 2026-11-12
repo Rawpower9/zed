@@ -177,6 +177,8 @@ Open [Agent Settings](./agent-settings.md), go to the **External Agents** page, 
 
 Registry-installed agents can also have per-agent settings under `agent_servers.<agent-id>`.
 
+To wrap an agent so that it uses the project knowledge graph and has to pass your checks before a turn ends, see [Agent Harness](./agent-harness.md).
+
 ## Extension-Provided Agents {#extension-agents}
 
 Extension-provided agents are deprecated. The [ACP Registry](#registry) is now the way to install agents, and previously installed extension agents are automatically migrated to their registry equivalents.

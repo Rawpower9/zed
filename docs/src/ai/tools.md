@@ -49,6 +49,12 @@ Searches file contents across the project using regular expressions, preferred f
 
 Lists files and directories in a given path, providing an overview of filesystem contents.
 
+### `query_knowledge_graph`
+
+Reads the project's [knowledge graph](./knowledge-graph.md): short typed notes that earlier sessions recorded, linked to each other and anchored to files. With no input it lists every node. It can search by text, file path, or kind, which returns one line per node, and read full nodes by id.
+
+**Example:** Before changing `src/auth/session.rs`, call `query_knowledge_graph` with that path to see the decisions and pitfalls already recorded for it, then read the one node whose summary is relevant.
+
 ### `read_file`
 
 Reads the content of a specified file in the project, allowing access to file contents.
@@ -98,6 +104,12 @@ Executes shell commands and returns the combined output, creating a new shell pr
 **Example:** After editing a Rust file, run `cargo test --package my_crate 2>&1 | tail -30` to confirm the changes don't break existing tests. Or run `git diff --stat` to review which files have been modified before wrapping up a task.
 
 ## Other Tools
+
+### `update_knowledge_graph`
+
+Creates, replaces, and deletes nodes in the project's [knowledge graph](./knowledge-graph.md). The agent uses this instead of writing notes or architecture summaries to documentation folders. Link targets must exist, and deleting a node removes the links that point to it.
+
+**Example:** After finding that invoice totals must be rounded per line to keep tax reports correct, record a `pitfall` node anchored to `src/billing/invoice.rs` so that the next session does not have to find it again.
 
 ### `skill`
 
