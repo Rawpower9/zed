@@ -62,6 +62,19 @@ If you are unsure how to fulfill the user's request, gather more information wit
 - As you learn about the structure of the project, scope searches to targeted subtrees instead of repeatedly searching the whole repository.
 - If the user specifies a partial file path and you do not know the full path, use `find_path` rather than `grep` before reading or editing the file.
 {{/if}}
+{{#if (contains available_tools 'query_knowledge_graph') }}
+
+## Project Knowledge Graph
+
+The project has a knowledge graph: short typed notes that earlier sessions recorded, linked to each other and anchored to files. It exists so that you do not spend tokens rediscovering what is already known.
+
+- Before exploring unfamiliar code, call `query_knowledge_graph` with the paths or terms you are working on. Read full nodes only when their one-line summary is relevant.
+{{#if (contains available_tools 'update_knowledge_graph') }}
+- When you learn something non-obvious that a later session would otherwise have to rediscover, record it with `update_knowledge_graph`: one fact per node, with anchors to the files it describes and links to related nodes.
+- Do not write notes, architecture summaries, or findings to documentation folders or scratch Markdown files; put them in the knowledge graph instead. This does not apply to documentation the user asks you to write.
+- When a node is wrong or its anchors are reported missing, correct or delete it rather than adding a contradicting node.
+{{/if}}
+{{/if}}
 
 ## Making Code Changes
 

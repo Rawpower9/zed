@@ -340,6 +340,46 @@ mod tests {
     }
 
     #[test]
+    fn test_system_prompt_describes_knowledge_graph_only_for_available_tools() {
+        let project = prompt_store::ProjectContext::default();
+        let render = |available_tools: Vec<SharedString>| {
+            SystemPromptTemplate {
+                project: &project,
+                available_tools,
+                model_name: Some("test-model".to_string()),
+                date: "2026-01-01".to_string(),
+                user_agents_md: None,
+                sandboxing: false,
+                is_linux: false,
+                is_windows: false,
+            }
+            .render(&Templates::new())
+            .unwrap()
+        };
+
+        let without_graph = render(vec!["grep".into()]);
+        assert!(!without_graph.contains("## Project Knowledge Graph"));
+        assert!(!without_graph.contains("knowledge_graph"));
+
+        // The `ask` profile can read the graph but not write to it, so the
+        // prompt must not tell the model to record anything.
+        let read_only = render(vec!["query_knowledge_graph".into()]);
+        assert!(read_only.contains("## Project Knowledge Graph"));
+        assert!(read_only.contains("call `query_knowledge_graph`"));
+        assert!(!read_only.contains("update_knowledge_graph"));
+        assert!(!read_only.contains("documentation folders"));
+
+        let read_write = render(vec![
+            "query_knowledge_graph".into(),
+            "update_knowledge_graph".into(),
+        ]);
+        assert!(read_write.contains("record it with `update_knowledge_graph`"));
+        assert!(read_write.contains(
+            "Do not write notes, architecture summaries, or findings to documentation folders"
+        ));
+    }
+
+    #[test]
     fn test_system_prompt_omits_user_agents_md_section_when_absent() {
         let project = prompt_store::ProjectContext::default();
         let template = SystemPromptTemplate {

@@ -63,6 +63,12 @@ const TOOLS: &[ToolInfo] = &[
         regex_explanation: "Patterns are matched against the directory path being created.",
     },
     ToolInfo {
+        id: "update_knowledge_graph",
+        name: "Update Knowledge Graph",
+        description: "Changes to the project's knowledge graph",
+        regex_explanation: "Patterns are matched against the path of each node file being written or deleted.",
+    },
+    ToolInfo {
         id: "fetch",
         name: "Fetch",
         description: "HTTP requests to URLs",
@@ -309,6 +315,7 @@ fn get_tool_render_fn(
         "copy_path" => render_copy_path_tool_config,
         "move_path" => render_move_path_tool_config,
         "create_directory" => render_create_directory_tool_config,
+        "update_knowledge_graph" => render_update_knowledge_graph_tool_config,
         "fetch" => render_fetch_tool_config,
         "search_web" => render_web_search_tool_config,
         "skill" => render_skill_tool_config,
@@ -1387,6 +1394,10 @@ tool_config_page_fn!(render_delete_path_tool_config, "delete_path");
 tool_config_page_fn!(render_copy_path_tool_config, "copy_path");
 tool_config_page_fn!(render_move_path_tool_config, "move_path");
 tool_config_page_fn!(render_create_directory_tool_config, "create_directory");
+tool_config_page_fn!(
+    render_update_knowledge_graph_tool_config,
+    "update_knowledge_graph"
+);
 tool_config_page_fn!(render_fetch_tool_config, "fetch");
 tool_config_page_fn!(render_web_search_tool_config, "search_web");
 tool_config_page_fn!(render_skill_tool_config, "skill");
@@ -1416,6 +1427,7 @@ mod tests {
             "list_agents_and_models",
             "list_directory",
             "open",
+            "query_knowledge_graph",
             "read_file",
             "rename_symbol",
             "thinking",

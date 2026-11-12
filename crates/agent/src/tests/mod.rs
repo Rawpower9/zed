@@ -7196,6 +7196,63 @@ async fn test_thread_tools_feature_gating(cx: &mut TestAppContext) {
 }
 
 #[gpui::test]
+async fn test_knowledge_graph_tools_reach_the_model(cx: &mut TestAppContext) {
+    let fake = init_test(cx);
+
+    let fs = FakeFs::new(cx.executor());
+    fs.insert_tree(path!("/test"), json!({})).await;
+    let project = Project::test(fs, [path!("/test").as_ref()], cx).await;
+    let project_context = cx.new(|_cx| ProjectContext::default());
+    let context_server_store = project.read_with(cx, |project, _| project.context_server_store());
+    let context_server_registry =
+        cx.new(|cx| ContextServerRegistry::new(context_server_store.clone(), cx));
+    let model = fake.model("fake");
+    let environment = Rc::new(cx.update(|cx| {
+        FakeThreadEnvironment::default().with_terminal(FakeTerminalHandle::new_never_exits(cx))
+    }));
+
+    let thread = cx.new(|cx| {
+        let mut thread = Thread::new(
+            project,
+            project_context,
+            context_server_registry,
+            Templates::new(),
+            Some(model.clone()),
+            cx,
+        );
+        thread.add_default_tools(environment, cx);
+        thread
+    });
+
+    thread
+        .update(cx, |thread, cx| {
+            thread.send(ClientUserMessageId::new(), ["hello"], cx)
+        })
+        .unwrap();
+    cx.run_until_parked();
+
+    // Registering a tool is not enough for the model to receive it: the
+    // default profile's allowlist must name it too.
+    let completion = fake.pending_completions().pop().unwrap();
+    let tool_names = tool_names_for_completion(&completion);
+    for tool_name in [
+        QueryKnowledgeGraphTool::NAME,
+        UpdateKnowledgeGraphTool::NAME,
+    ] {
+        assert!(
+            tool_names.iter().any(|name| name == tool_name),
+            "expected `{tool_name}` to be exposed by the default profile, got: {tool_names:?}"
+        );
+    }
+
+    let MessageContent::Text(system_prompt) = &completion.messages[0].content[0] else {
+        panic!("Expected text content");
+    };
+    assert!(system_prompt.contains("## Project Knowledge Graph"));
+    assert!(system_prompt.contains("put them in the knowledge graph instead"));
+}
+
+#[gpui::test]
 async fn test_parent_cancel_stops_subagent(cx: &mut TestAppContext) {
     let fake = init_test(cx);
 

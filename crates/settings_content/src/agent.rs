@@ -632,12 +632,14 @@ fn agent_profile_tools_schema(_: &mut schemars::SchemaGenerator) -> schemars::Sc
         "list_agents_and_models",
         "list_directory",
         "move_path",
+        "query_knowledge_graph",
         "read_file",
         "rename_symbol",
         "search_web",
         "skill",
         "spawn_agent",
         "terminal",
+        "update_knowledge_graph",
         "write_file",
     ];
     let properties = tool_names

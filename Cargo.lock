@@ -282,6 +282,7 @@ dependencies = [
  "http_proxy",
  "indoc",
  "itertools 0.14.0",
+ "knowledge_graph",
  "language",
  "language_model",
  "language_models",
